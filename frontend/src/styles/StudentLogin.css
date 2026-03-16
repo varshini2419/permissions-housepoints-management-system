@@ -1,0 +1,96 @@
+/* StudentLogin.css - Modern Login Page */
+.student-login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  padding: 16px;
+}
+
+.student-login-box {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  animation: slideIn 0.3s ease;
+}
+
+.student-login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.student-login-header h1 {
+  color: #0f172a;
+  margin-bottom: 8px;
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.student-login-header p {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.student-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.student-login-form .form-group {
+  margin-bottom: 0;
+}
+
+.student-login-form label {
+  display: block;
+  margin-bottom: 6px;
+  color: #0f172a;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.student-login-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background-color: #f8fafc;
+}
+
+.student-login-form input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.student-login-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.student-login-btn:hover {
+  opacity: 0.9;
+}
+
+.student-login-footer {
+  text-align: center;
+  margin-top: 20px;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}

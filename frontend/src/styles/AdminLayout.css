@@ -1,0 +1,87 @@
+/* AdminLayout.css - Modern Layout */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f1f5f9;
+}
+
+.layout-wrapper {
+  display: flex;
+  flex: 1;
+  margin-top: 64px;
+  transition: all 0.3s ease;
+}
+
+.layout-main {
+  flex: 1;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.layout-main.sidebar-wide {
+  margin-left: 256px;
+}
+
+.layout-main.sidebar-narrow {
+  margin-left: 80px;
+}
+
+.layout-content {
+  padding: 24px;
+  max-width: 100%;
+}
+
+.admin-header {
+  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-action-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.3s ease;
+}
+
+.admin-action-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .layout-main {
+    margin-left: 0 !important;
+  }
+  
+  .layout-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-content {
+    padding: 12px;
+  }
+}

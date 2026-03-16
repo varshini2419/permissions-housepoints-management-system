@@ -1,0 +1,245 @@
+/* frontend/src/styles/Navbar.css */
+/* Modern Dashboard Navigation */
+
+.navbar {
+  height: 64px;
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Section */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+/* Toggle Button */
+.navbar-toggle {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.navbar-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-toggle-icon {
+  font-size: 20px;
+}
+
+/* Brand Section */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-brand-icon {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.navbar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .navbar-title {
+    display: none;
+  }
+}
+
+/* Right Menu */
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* User Info */
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.navbar-user:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.navbar-user-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.navbar-user-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .navbar-user-name {
+    display: none;
+  }
+}
+
+.navbar-user span {
+  font-size: 0.9rem;
+}
+
+/* Logout Button */
+.navbar-logout-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar-logout-btn:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Legacy Logout Button (keeping for backward compatibility) */
+.navbar-logout {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.navbar-logout:hover {
+  background: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 16px;
+  }
+  
+  .navbar-brand-icon {
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 1.2rem;
+    padding: 4px 8px;
+  }
+  
+  .navbar-logo h1 {
+    display: none;
+  }
+  
+  .navbar-toggle {
+    display: block;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar-logout-btn span {
+    display: none;
+  }
+  
+  .navbar-logout-btn {
+    padding: 8px 12px;
+  }
+  
+  .navbar-user {
+    padding: 6px 12px;
+  }
+}
+
+/* Animation for mobile menu */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-menu.mobile-open {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  padding: 16px;
+  gap: 12px;
+  animation: slideDown 0.3s ease;
+}
+
+.navbar-menu.mobile-open .navbar-user,
+.navbar-menu.mobile-open .navbar-logout-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Focus States for Accessibility */
+.navbar-toggle:focus,
+.navbar-logout-btn:focus,
+.navbar-logout:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  .navbar {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  }
+}

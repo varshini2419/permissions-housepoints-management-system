@@ -1,0 +1,72 @@
+/* HodLogin.css */
+.hod-login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+  padding: 20px;
+}
+
+.hod-login-box {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.hod-login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.hod-login-header h1 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.hod-login-header p {
+  color: #7f8c8d;
+}
+
+.hod-login-form .form-group {
+  margin-bottom: 20px;
+}
+
+.hod-login-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: 500;
+}
+
+.hod-login-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dcdde1;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.hod-login-form input:focus {
+  outline: none;
+  border-color: #8e44ad;
+}
+
+.hod-login-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.hod-login-btn:hover {
+  opacity: 0.9;
+}

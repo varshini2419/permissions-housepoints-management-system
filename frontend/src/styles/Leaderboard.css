@@ -1,0 +1,154 @@
+/* Leaderboard.css */
+.leaderboard-container {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.leaderboard-header {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  padding: 20px;
+}
+
+.leaderboard-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.leaderboard-filters {
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ecf0f1;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-group label {
+  font-weight: 500;
+  color: #555;
+}
+
+.filter-group select {
+  padding: 5px 10px;
+  border: 1px solid #dcdde1;
+  border-radius: 5px;
+  outline: none;
+}
+
+.filter-group select:focus {
+  border-color: #f39c12;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard-table th {
+  background: #34495e;
+  color: white;
+  padding: 15px;
+  text-align: left;
+  font-weight: 500;
+}
+
+.leaderboard-table td {
+  padding: 15px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.leaderboard-table tr:hover {
+  background: #f8f9fa;
+}
+
+.rank-1 {
+  background: #fff3cd;
+}
+
+.rank-1 td:first-child {
+  border-left: 4px solid #f39c12;
+}
+
+.rank-2 {
+  background: #f0f0f0;
+}
+
+.rank-2 td:first-child {
+  border-left: 4px solid #95a5a6;
+}
+
+.rank-3 {
+  background: #ffe5d0;
+}
+
+.rank-3 td:first-child {
+  border-left: 4px solid #e67e22;
+}
+
+.rank-badge {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
+}
+
+.rank-1 .rank-badge {
+  background: #f39c12;
+  color: white;
+}
+
+.rank-2 .rank-badge {
+  background: #95a5a6;
+  color: white;
+}
+
+.rank-3 .rank-badge {
+  background: #e67e22;
+  color: white;
+}
+
+.student-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.student-name {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.student-detail {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+.points-cell {
+  font-weight: bold;
+  color: #f39c12;
+  font-size: 1.2rem;
+}
+
+.leaderboard-footer {
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,256 @@
+/* frontend/src/styles/ActivityCard.css */
+/* Modern Card Styling for Activity Components */
+
+.activity-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.activity-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.activity-header {
+  padding: 16px;
+  border-bottom: 2px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8fafc;
+}
+
+.activity-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.activity-type {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: #dbeafe;
+  color: #1e40af;
+  letter-spacing: 0.05em;
+}
+
+.activity-body {
+  padding: 16px;
+}
+
+.activity-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: #64748b;
+  font-size: 0.875rem;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.activity-student {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.activity-student svg {
+  color: #3b82f6;
+}
+
+.activity-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.activity-date svg {
+  color: #3b82f6;
+}
+
+.activity-description {
+  margin: 12px 0;
+  color: #334155;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  padding: 8px 0;
+}
+
+.activity-proof {
+  margin: 12px 0;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px dashed #cbd5e1;
+}
+
+.activity-proof a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.activity-proof a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.activity-points {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.points-badge {
+  background: #f59e0b;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.points-badge svg {
+  color: white;
+}
+
+.activity-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+
+.activity-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.activity-status.approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.activity-status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.activity-actions {
+  padding: 16px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.points-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 10px;
+}
+
+.points-input input {
+  width: 70px;
+  padding: 6px 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+.points-input input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.btn-approve, .btn-reject {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-approve {
+  background: #10b981;
+  color: white;
+}
+
+.btn-approve:hover {
+  background: #059669;
+}
+
+.btn-reject {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-reject:hover {
+  background: #dc2626;
+}
+
+.btn-approve:disabled, .btn-reject:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .activity-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .activity-actions {
+    flex-wrap: wrap;
+  }
+  
+  .points-input {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+  
+  .points-input input {
+    width: 100%;
+  }
+  
+  .btn-approve, .btn-reject {
+    flex: 1;
+    justify-content: center;
+  }
+}

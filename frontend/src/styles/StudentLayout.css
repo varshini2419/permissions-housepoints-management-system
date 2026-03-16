@@ -1,0 +1,71 @@
+/* StudentLayout.css - Modern Layout */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f1f5f9;
+}
+
+.layout-wrapper {
+  display: flex;
+  flex: 1;
+  margin-top: 64px;
+  transition: all 0.3s ease;
+}
+
+.layout-main {
+  flex: 1;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.layout-main.sidebar-wide {
+  margin-left: 256px;
+}
+
+.layout-main.sidebar-narrow {
+  margin-left: 80px;
+}
+
+.layout-content {
+  padding: 24px;
+  max-width: 100%;
+}
+
+.student-header {
+  margin-bottom: 24px;
+  animation: slideIn 0.3s ease;
+}
+
+.student-header h1 {
+  color: #0f172a;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.student-header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .layout-main {
+    margin-left: 0 !important;
+  }
+  
+  .layout-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-content {
+    padding: 12px;
+  }
+  
+  .student-header h1 {
+    font-size: 1.5rem;
+  }
+}
