@@ -6,7 +6,6 @@ import {
   FaUsers, 
   FaClock, 
   FaCheckCircle, 
-  FaTimesCircle, 
   FaStar,
   FaCalendarAlt,
   FaClipboardList 

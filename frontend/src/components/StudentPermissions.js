@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { permissionAPI, uploadAPI } from '../services/api';
 import DashboardLayout from './DashboardLayout';
 import { 
@@ -8,13 +7,11 @@ import {
   FaTimesCircle, 
   FaClock,
   FaUpload,
-  FaCalendarAlt,
   FaFilePdf,
   FaEye
 } from 'react-icons/fa';
 
 const StudentPermissions = () => {
-  const { user } = useAuth();
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { activityAPI, uploadAPI, housePointAPI } from '../services/api';
 import DashboardLayout from './DashboardLayout';
 import { 
@@ -15,7 +14,6 @@ import {
 } from 'react-icons/fa';
 
 const StudentActivities = () => {
-  const { user } = useAuth();
   const [activities, setActivities] = useState([]);
   const [housePoints, setHousePoints] = useState({ totalPoints: 0, activityHistory: [] });
   const [loading, setLoading] = useState(true);

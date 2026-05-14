@@ -9,8 +9,7 @@ import {
   FaClock,
   FaEye,
   FaFilter,
-  FaSyncAlt,
-  FaBuilding
+  FaSyncAlt
 } from 'react-icons/fa';
 
 const HODPermissions = () => {
