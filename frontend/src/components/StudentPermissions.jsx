@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { permissionAPI, uploadAPI } from '../services/api';
 import DashboardLayout from './DashboardLayout';
+import { getApiOrigin } from '../config/apiBase';
 import { 
   FaFileAlt, 
   FaCheckCircle, 
@@ -215,7 +216,7 @@ const StudentPermissions = () => {
             {formData.document && (
               <div className="form-group">
                 <a 
-                  href={`http://localhost:5000${formData.document}`} 
+                  href={`${getApiOrigin()}${formData.document}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="btn btn-sm"
@@ -262,7 +263,7 @@ const StudentPermissions = () => {
                   </td>
                   <td>
                     <a 
-                      href={`http://localhost:5000${permission.document}`} 
+                      href={`${getApiOrigin()}${permission.document}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="btn btn-primary btn-sm"

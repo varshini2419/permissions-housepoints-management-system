@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { dashboardAPI, permissionAPI } from '../services/api';
 import DashboardLayout from './DashboardLayout';
+import { getApiOrigin } from '../config/apiBase';
 import { 
   FaClock, 
   FaTrophy,
@@ -143,7 +144,7 @@ const HODDashboard = () => {
                   <td>{new Date(permission.date).toLocaleDateString()}</td>
                   <td>
                     <a 
-                      href={`http://localhost:5000${permission.document}`} 
+                      href={`${getApiOrigin()}${permission.document}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="btn btn-primary btn-sm"

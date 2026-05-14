@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { dashboardAPI, permissionAPI, activityAPI } from '../services/api';
 import DashboardLayout from './DashboardLayout';
+import { getApiOrigin } from '../config/apiBase';
 import { 
   FaClock, 
   FaEye,
@@ -185,7 +186,7 @@ const FacultyDashboard = () => {
                   <td>{new Date(permission.date).toLocaleDateString()}</td>
                   <td>
                     <a 
-                      href={`http://localhost:5000${permission.document}`} 
+                      href={`${getApiOrigin()}${permission.document}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="btn btn-primary btn-sm"
@@ -251,7 +252,7 @@ const FacultyDashboard = () => {
                   <td>{new Date(activity.date).toLocaleDateString()}</td>
                   <td>
                     <a 
-                      href={`http://localhost:5000${activity.proofImage}`} 
+                      href={`${getApiOrigin()}${activity.proofImage}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="btn btn-primary btn-sm"

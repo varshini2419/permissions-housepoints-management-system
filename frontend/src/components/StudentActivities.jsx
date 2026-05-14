@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { activityAPI, uploadAPI, housePointAPI } from '../services/api';
 import DashboardLayout from './DashboardLayout';
+import { getApiOrigin } from '../config/apiBase';
 import { 
   FaClipboardList, 
   FaCheckCircle, 
@@ -273,7 +274,7 @@ const StudentActivities = () => {
             {formData.proofImage && (
               <div className="form-group">
                 <a 
-                  href={`http://localhost:5000${formData.proofImage}`} 
+                  href={`${getApiOrigin()}${formData.proofImage}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="btn btn-sm"
@@ -329,7 +330,7 @@ const StudentActivities = () => {
                   </td>
                   <td>
                     <a 
-                      href={`http://localhost:5000${activity.proofImage}`} 
+                      href={`${getApiOrigin()}${activity.proofImage}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="btn btn-primary btn-sm"

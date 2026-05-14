@@ -1,21 +1,8 @@
 // frontend/src/api/axiosConfig.js
 import axios from 'axios';
+import { getApiBaseUrl } from '../config/apiBase';
 
-// Determine the base URL based on environment
-const getBaseURL = () => {
-  // Check for environment variable first
-  if (process.env.REACT_APP_API_URL) {
-    return process.env.REACT_APP_API_URL;
-  }
-  
-  // Default for development
-  if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:5000/api';
-  }
-  
-  // Default for production (update with your actual production URL)
-  return 'https://api.campus-system.com/api';
-};
+const getBaseURL = () => getApiBaseUrl();
 
 // Create axios instance
 const api = axios.create({
@@ -39,14 +26,14 @@ api.interceptors.request.use(
     }
     
     // Log requests in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.log(`🚀 ${config.method.toUpperCase()} ${config.baseURL}${config.url}`, config.data || '');
     }
     
     return config;
   },
   (error) => {
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.error('❌ Request Error:', error);
     }
     return Promise.reject(error);
@@ -57,7 +44,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     // Log responses in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.log(`✅ ${response.status} ${response.config.url}`, response.data);
     }
     
@@ -68,7 +55,7 @@ api.interceptors.response.use(
     const originalRequest = error.config;
     
     // Log errors in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.error('❌ Response Error:', error.response || error);
     }
     
