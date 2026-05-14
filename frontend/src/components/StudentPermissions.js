@@ -35,7 +35,7 @@ const StudentPermissions = () => {
       if (response.data.success) {
         setPermissions(response.data.data);
       }
-    } catch (error) {
+    } catch {
       setError('Failed to load permissions');
     } finally {
       setLoading(false);
