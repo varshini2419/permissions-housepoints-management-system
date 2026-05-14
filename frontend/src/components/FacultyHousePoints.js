@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { dashboardAPI, housePointAPI, activityAPI } from '../services/api';
+import { housePointAPI, activityAPI } from '../services/api';
 import DashboardLayout from './DashboardLayout';
 import { 
   FaStar, 
   FaTrophy, 
-  FaCheckCircle, 
   FaClock,
-  FaEye,
   FaPlusCircle,
   FaMinusCircle,
   FaUsers,
-  FaGraduationCap,
   FaHistory,
-  FaFilter,
   FaSearch,
   FaSpinner
 } from 'react-icons/fa';
 
 const FacultyHousePoints = () => {
   const { user } = useAuth();
-  const [students, setStudents] = useState([]);
   const [housePoints, setHousePoints] = useState([]);
   const [pendingActivities, setPendingActivities] = useState([]);
   const [summary, setSummary] = useState({
@@ -57,16 +52,11 @@ const FacultyHousePoints = () => {
     setError('');
     try {
       // Fetch all required data in parallel
-      const [dashboardRes, pointsRes, summaryRes, activitiesRes] = await Promise.all([
-        dashboardAPI.getFacultyDashboard().catch(err => ({ data: { success: false, data: { students: [] } } })),
+      const [pointsRes, summaryRes, activitiesRes] = await Promise.all([
         housePointAPI.getDepartmentPoints().catch(err => ({ data: { success: false, data: [] } })),
         housePointAPI.getPointsSummary().catch(err => ({ data: { success: false, data: {} } })),
         activityAPI.getAll({ status: 'pending' }).catch(err => ({ data: { success: false, data: [] } }))
       ]);
-      
-      if (dashboardRes.data.success) {
-        setStudents(dashboardRes.data.data.students || []);
-      }
       
       if (pointsRes.data.success) {
         setHousePoints(pointsRes.data.data || []);
@@ -214,11 +204,6 @@ const FacultyHousePoints = () => {
   const getStudentPoints = (studentId) => {
     const student = housePoints.find(hp => hp.studentId === studentId);
     return student?.totalPoints || 0;
-  };
-
-  const getStudentPointsHistory = (studentId) => {
-    const student = housePoints.find(hp => hp.studentId === studentId);
-    return student?.activityHistory || [];
   };
 
   const getStudentPendingActivities = (studentId) => {

@@ -3,10 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { dashboardAPI, permissionAPI, activityAPI } from '../services/api';
 import DashboardLayout from './DashboardLayout';
 import { 
-  FaUsers, 
   FaClock, 
-  FaCheckCircle, 
-  FaTimesCircle, 
   FaEye,
   FaFileAlt,
   FaClipboardList,

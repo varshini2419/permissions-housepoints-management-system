@@ -12,8 +12,6 @@ import {
   FaChalkboardTeacher,
   FaUserTie,
   FaCog,
-  FaFileAlt,
-  FaTrophy,
   FaBell,
   FaStar
 } from 'react-icons/fa';
@@ -31,10 +29,6 @@ const DashboardLayout = ({ children, title }) => {
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
-  };
-
-  const isActive = (path) => {
-    return location.pathname === path;
   };
 
   const getMenuItems = () => {
