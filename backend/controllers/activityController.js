@@ -166,57 +166,9 @@ const rejectActivity = async (req, res) => {
   }
 };
 
-const getActivityStats = async (req, res) => {
-  try {
-    let query = {};
-
-    if (req.user.role === 'student') {
-      query.studentId = req.user._id;
-    } else if (req.user.role === 'faculty') {
-      query.department = req.user.department;
-    }
-
-    const stats = await Activity.aggregate([
-      { $match: query },
-      {
-        $group: {
-          _id: '$status',
-          count: { $sum: 1 },
-          points: { $sum: '$housePoints' }
-        }
-      }
-    ]);
-
-    const formattedStats = {
-      total: 0,
-      pending: 0,
-      approved: 0,
-      rejected: 0,
-      totalPoints: 0
-    };
-
-    stats.forEach(stat => {
-      formattedStats[stat._id] = stat.count;
-      formattedStats.total += stat.count;
-      formattedStats.totalPoints += stat.points || 0;
-    });
-
-    res.json({
-      success: true,
-      data: formattedStats
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      message: error.message 
-    });
-  }
-};
-
 module.exports = {
   createActivity,
   getActivities,
   approveActivity,
-  rejectActivity,
-  getActivityStats
+  rejectActivity
 };

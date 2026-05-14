@@ -601,24 +601,7 @@ const FacultyHousePoints = () => {
                         >
                           <FaPlusCircle /> Add
                         </button>
-                        <button
-                          className="btn btn-danger btn-sm"
-                          onClick={() => {
-                            setPointsForm({
-                              studentId: student.studentId,
-                              studentName: student.studentName,
-                              points: 0,
-                              reason: '',
-                              activityId: '',
-                              type: 'deduct'
-                            });
-                            setShowDeductForm(true);
-                            setShowAddForm(false);
-                          }}
-                          disabled={submitting || student.totalPoints === 0}
-                        >
-                          <FaMinusCircle /> Deduct
-                        </button>
+                        {/* Deduct button removed as requested */}
                       </div>
                     </td>
                   </tr>
@@ -761,5 +744,3 @@ const FacultyHousePoints = () => {
 };
 
 export default FacultyHousePoints;
-
-

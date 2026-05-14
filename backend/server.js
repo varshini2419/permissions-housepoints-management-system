@@ -2,9 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const path = require('path');
 const bcrypt = require('bcryptjs');
-const fs = require('fs');
 
 dotenv.config();
 
@@ -17,34 +15,12 @@ const permissionRoutes = require('./routes/permissionRoutes');
 const activityRoutes = require('./routes/activityRoutes');
 const housePointRoutes = require('./routes/housePointRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
-const uploadRoutes = require('./routes/uploadRoutes');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}));
-
-// Create upload directories if they don't exist
-const uploadDirs = [
-  './uploads',
-  './uploads/documents',
-  './uploads/images'
-];
-
-uploadDirs.forEach(dir => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-    console.log(`📁 Created directory: ${dir}`);
-  }
-});
-
-// Serve static files from uploads directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -52,83 +28,64 @@ app.use('/api/permissions', permissionRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/housepoints', housePointRoutes);
 app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/upload', uploadRoutes);
 
 // Test route
 app.get('/api/test', (req, res) => {
   res.json({ success: true, message: 'Server is running' });
 });
 
-// Test route to check uploads
-app.get('/api/test-uploads', (req, res) => {
-  const uploadDir = path.join(__dirname, 'uploads');
-  
-  const documents = fs.existsSync(path.join(uploadDir, 'documents')) ? 
-    fs.readdirSync(path.join(uploadDir, 'documents')) : [];
-  const images = fs.existsSync(path.join(uploadDir, 'images')) ? 
-    fs.readdirSync(path.join(uploadDir, 'images')) : [];
-  
-  res.json({
-    success: true,
-    uploads: {
-      documents,
-      images
-    }
-  });
-});
-
-// Connect to MongoDB
+// Connect to MongoDB and create users
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect('mongodb://localhost:27017/campus-permission-system')
   .then(async () => {
     console.log('✅ MongoDB connected');
     
-    // Check if users exist
-    const userCount = await User.countDocuments();
-    if (userCount === 0) {
-      console.log('📝 Creating default users...');
-      
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash('password123', salt);
-      
-      const users = [
-        {
-          name: 'Student One',
-          email: 'student1@example.com',
-          password: hashedPassword,
-          role: 'student',
-          registerNumber: 'REG001',
-          department: 'Computer Science',
-          branch: 'Computer Science',
-          section: 'A'
-        },
-        {
-          name: 'Faculty One',
-          email: 'faculty@example.com',
-          password: hashedPassword,
-          role: 'faculty',
-          department: 'Computer Science'
-        },
-        {
-          name: 'HOD One',
-          email: 'hod@example.com',
-          password: hashedPassword,
-          role: 'hod',
-          department: 'Computer Science'
-        }
-      ];
-
-      for (const userData of users) {
-        const user = new User(userData);
-        await user.save();
-        console.log(`  ✅ Created: ${user.name} (${user.role})`);
+    // Clear existing users
+    await User.deleteMany({});
+    console.log('🗑️ Cleared existing users');
+    
+    // Hash passwords manually
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash('password123', salt);
+    
+    // Create users with pre-hashed passwords
+    const users = [
+      {
+        name: 'Student One',
+        email: 'student1@example.com',
+        password: hashedPassword,
+        role: 'student',
+        registerNumber: 'REG001',
+        department: 'Computer Science',
+        branch: 'Computer Science',
+        section: 'A'
+      },
+      {
+        name: 'Faculty One',
+        email: 'faculty@example.com',
+        password: hashedPassword,
+        role: 'faculty',
+        department: 'Computer Science'
+      },
+      {
+        name: 'HOD One',
+        email: 'hod@example.com',
+        password: hashedPassword,
+        role: 'hod',
+        department: 'Computer Science'
       }
-      
-      console.log('✅ Default users created');
-    } else {
-      console.log(`✅ ${userCount} users already exist`);
+    ];
+
+    for (const userData of users) {
+      const user = new User(userData);
+      await user.save();
+      console.log(`✅ Created: ${user.name} (${user.role})`);
     }
+
+    // Verify users
+    const count = await User.countDocuments();
+    console.log(`📊 Total users in database: ${count}`);
 
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
