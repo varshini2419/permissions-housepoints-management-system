@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/axiosConfig';
 
 const FacultyLogin = () => {
   const [facultyId, setFacultyId] = useState('');
@@ -20,23 +19,14 @@ const FacultyLogin = () => {
     setLoading(true);
 
     try {
-      const response = await api.post('/auth/login/faculty', {
-        facultyId,
-        password
-      });
-
-      const { token, user } = response.data;
-
-      // Save to context and localStorage
-      login(token, user);
-
-      // Redirect to faculty dashboard
-      navigate('/faculty/dashboard', { replace: true });
+      const result = await login({ facultyId, password });
+      if (result.success) {
+        navigate('/faculty/dashboard', { replace: true });
+      } else {
+        setError(result.error || 'Login failed. Please check your credentials and try again.');
+      }
     } catch (err) {
-      setError(
-        err.response?.data?.message || 
-        'Login failed. Please check your credentials and try again.'
-      );
+      setError(err?.message || 'Login failed. Please check your credentials and try again.');
     } finally {
       setLoading(false);
     }

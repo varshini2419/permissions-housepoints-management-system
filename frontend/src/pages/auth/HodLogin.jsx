@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/axiosConfig';
 
 const HodLogin = () => {
   const [email, setEmail] = useState('');
@@ -20,23 +19,14 @@ const HodLogin = () => {
     setLoading(true);
 
     try {
-      const response = await api.post('/auth/login/hod', {
-        email,
-        password
-      });
-
-      const { token, user } = response.data;
-
-      // Save to context and localStorage
-      login(token, user);
-
-      // Redirect to HOD dashboard
-      navigate('/hod/dashboard', { replace: true });
+      const result = await login({ email, password });
+      if (result.success) {
+        navigate('/hod/dashboard', { replace: true });
+      } else {
+        setError(result.error || 'Login failed. Please check your credentials and try again.');
+      }
     } catch (err) {
-      setError(
-        err.response?.data?.message || 
-        'Login failed. Please check your credentials and try again.'
-      );
+      setError(err?.message || 'Login failed. Please check your credentials and try again.');
     } finally {
       setLoading(false);
     }

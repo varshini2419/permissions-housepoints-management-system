@@ -26,18 +26,35 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const API_URL = import.meta.env.VITE_API_URL;
-      const res = await axios.post(`${API_URL}/api/auth/login`, credentials);
-      if (res.data.success) {
+
+      // Determine endpoint and payload based on provided credentials
+      let endpoint = '/api/auth/login';
+      let payload = credentials;
+
+      if (credentials?.registerNumber) {
+        endpoint = '/api/auth/login/student';
+        payload = { registerNumber: credentials.registerNumber, password: credentials.password };
+      } else if (credentials?.facultyId) {
+        endpoint = '/api/auth/login/faculty';
+        payload = { facultyId: credentials.facultyId, password: credentials.password };
+      } else if (credentials?.email) {
+        endpoint = '/api/auth/login/hod';
+        payload = { email: credentials.email, password: credentials.password };
+      }
+
+      const res = await axios.post(`${API_URL}${endpoint}`, payload);
+      if (res.data?.success) {
         const { token, ...userData } = res.data.data;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
         return { success: true };
       }
+      return { success: false, error: res.data?.message || 'Login failed' };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Login failed' 
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message || 'Login failed'
       };
     }
   };
