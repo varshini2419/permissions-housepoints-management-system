@@ -12,16 +12,23 @@ const seedUsers = async () => {
     await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/campus_permission_system');
     console.log('✅ MongoDB connected');
 
-    // Clear existing users (optional - comment out to preserve existing data)
-    // await User.deleteMany({});
-    // console.log('🗑️ Cleared existing users');
+    // Delete old wrong students (24B91A0001 to 24B91A0072)
+    console.log('🧹 Cleaning up old incorrect student records...');
+    const oldRegNums = [];
+    for (let i = 1; i <= 72; i++) {
+      oldRegNums.push(`24B91A0${String(i).padStart(3, '0')}`);
+    }
+    const deleteResult = await User.deleteMany({ registerNumber: { $in: oldRegNums } });
+    if (deleteResult.deletedCount > 0) {
+      console.log(`✅ Deleted ${deleteResult.deletedCount} old incorrect student records`);
+    }
 
     const usersToCreate = [];
 
     // 1. Create 72 students (24B91A0701 to 24B91A0772)
-    console.log('📚 Creating students...');
+    console.log('📚 Creating students with correct roll numbers...');
     for (let i = 1; i <= 72; i++) {
-      const regNum = `24B91A0${String(i).padStart(3, '0')}`;
+      const regNum = `24B91A0${String(700 + i).padStart(3, '0')}`;
       const existingStudent = await User.findOne({ registerNumber: regNum });
       
       if (existingStudent) {
@@ -34,7 +41,7 @@ const seedUsers = async () => {
 
       usersToCreate.push({
         name: `Student ${i}`,
-        email: `student${i}@campus.edu`,
+        email: `student${regNum}@campus.edu`,
         password: hashedPassword,
         role: 'student',
         registerNumber: regNum,
