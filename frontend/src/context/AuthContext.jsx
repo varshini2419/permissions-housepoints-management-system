@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { getApiBaseUrl } from '../config/apiBase';
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -26,7 +25,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const res = await axios.post(`${getApiBaseUrl()}/auth/login`, credentials);
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await axios.post(`${API_URL}/api/auth/login`, credentials);
       if (res.data.success) {
         const { token, ...userData } = res.data.data;
         localStorage.setItem('token', token);

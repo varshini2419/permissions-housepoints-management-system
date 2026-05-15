@@ -20,7 +20,12 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({
+  origin: process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(',')
+    : ['http://localhost:5173'],
+  credentials: true
+}));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -37,7 +42,7 @@ app.get('/api/test', (req, res) => {
 // Connect to MongoDB and create users
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect('mongodb://localhost:27017/campus-permission-system')
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/campus-permission-system')
   .then(async () => {
     console.log('✅ MongoDB connected');
     

@@ -2,18 +2,16 @@ function trimTrailingSlashes(s) {
   return (s || '').replace(/\/+$/, '');
 }
 
+const DEFAULT_API_URL = 'http://localhost:5000';
+
+const API_URL = import.meta.env.VITE_API_URL || DEFAULT_API_URL;
+
 /**
- * Axios base URL (includes /api). Vercel: VITE_API_URL=https://permissions-housepoints-management.onrender.com
+ * Axios base URL (includes /api). Set VITE_API_URL in production.
  */
 export function getApiBaseUrl() {
-  const raw = trimTrailingSlashes(import.meta.env.VITE_API_URL);
-  if (raw) {
-    return raw.endsWith('/api') ? raw : `${raw}/api`;
-  }
-  if (import.meta.env.DEV) {
-    return 'http://localhost:5000/api';
-  }
-  return 'https://permissions-housepoints-management.onrender.com/api';
+  const raw = trimTrailingSlashes(API_URL);
+  return raw.endsWith('/api') ? raw : `${raw}/api`;
 }
 
 /** Backend origin for uploaded file links (no /api suffix). */
