@@ -22,14 +22,17 @@ const toPublicUser = (user) => ({
 const loginStudent = async (req, res) => {
   try {
     const { registerNumber, password } = req.body;
+    const id = (registerNumber || "").trim();
 
-    if (!registerNumber || !password) {
-      return res.status(400).json({ message: "Register number and password required" });
+    if (!id || !password) {
+      return res.status(400).json({
+        message: "Register number and password required",
+      });
     }
 
     const user = await User.findOne({
       role: "student",
-      registerNumber: registerNumber.trim(),
+      registerNumber: id,
     });
 
     if (!user || !(await user.comparePassword(password))) {
@@ -49,13 +52,14 @@ const loginStudent = async (req, res) => {
 // FACULTY LOGIN
 const loginFaculty = async (req, res) => {
   try {
-    const { facultyId, password } = req.body;
+    const { facultyId, email, password } = req.body;
+    const id = (facultyId || email || "").trim();
 
-    if (!facultyId || !password) {
-      return res.status(400).json({ message: "Faculty ID and password required" });
+    if (!id || !password) {
+      return res.status(400).json({
+        message: "Faculty ID and password required",
+      });
     }
-
-    const id = facultyId.trim();
 
     const user = await User.findOne({
       role: "faculty",
@@ -83,13 +87,14 @@ const loginFaculty = async (req, res) => {
 // HOD LOGIN
 const loginHod = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { hodId, email, password } = req.body;
+    const id = (hodId || email || "").trim();
 
-    if (!email || !password) {
-      return res.status(400).json({ message: "HOD ID / Email and password required" });
+    if (!id || !password) {
+      return res.status(400).json({
+        message: "HOD ID and password required",
+      });
     }
-
-    const id = email.trim();
 
     const user = await User.findOne({
       role: "hod",
