@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useContext, useEffect } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -9,74 +9,104 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initAuth = async () => {
-      const token = localStorage.getItem('token');
-      const storedUser = localStorage.getItem('user');
-      
-      if (token && storedUser) {
-        // Don't validate immediately, just set from storage
-        setUser(JSON.parse(storedUser));
-      }
-      setLoading(false);
-    };
+    const token = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
 
-    initAuth();
+    if (token && storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
+    setLoading(false);
   }, []);
 
+  // ====================
+  // LOGIN (FINAL FIX)
+  // ====================
   const login = async (credentials) => {
     try {
       const API_URL = import.meta.env.VITE_API_URL;
 
-      // Determine endpoint and payload based on provided credentials
-      let endpoint = '/api/auth/login';
-      let payload = credentials;
+      let endpoint = "";
+      let payload = {};
 
+      // Decide endpoint
       if (credentials?.registerNumber) {
-        endpoint = '/api/auth/login/student';
-        payload = { registerNumber: credentials.registerNumber, password: credentials.password };
+        endpoint = "/api/auth/login/student";
+        payload = {
+          registerNumber: credentials.registerNumber.trim(),
+          password: credentials.password,
+        };
       } else if (credentials?.facultyId) {
-        endpoint = '/api/auth/login/faculty';
-        payload = { facultyId: credentials.facultyId, password: credentials.password };
+        endpoint = "/api/auth/login/faculty";
+        payload = {
+          facultyId: credentials.facultyId.trim(),
+          password: credentials.password,
+        };
       } else if (credentials?.email) {
-        endpoint = '/api/auth/login/hod';
-        payload = { email: credentials.email, password: credentials.password };
+        endpoint = "/api/auth/login/hod";
+        payload = {
+          email: credentials.email.trim(),
+          password: credentials.password,
+        };
+      } else {
+        return { success: false, error: "Invalid login type" };
       }
 
+      // Call API
       const res = await axios.post(`${API_URL}${endpoint}`, payload);
-      if (res.data?.success) {
-        const { token, ...userData } = res.data.data;
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(userData));
+
+      // ✅ FIX: backend returns { token, user }
+      const token = res.data?.token;
+      const userData = res.data?.user;
+
+      if (token && userData) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(userData));
         setUser(userData);
+
         return { success: true };
       }
-      return { success: false, error: res.data?.message || 'Login failed' };
-    } catch (error) {
+
       return {
         success: false,
-        error: error.response?.data?.message || error.message || 'Login failed'
+        error: res.data?.message || "Login failed",
+      };
+    } catch (error) {
+      console.error("Login error:", error);
+
+      return {
+        success: false,
+        error:
+          error.response?.data?.message ||
+          error.message ||
+          "Login failed",
       };
     }
   };
 
+  // ====================
+  // LOGOUT
+  // ====================
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      loading,
-      login,
-      logout,
-      isAuthenticated: !!user,
-      isStudent: user?.role === 'student',
-      isFaculty: user?.role === 'faculty',
-      isHOD: user?.role === 'hod',
-      isAdmin: user?.role === 'admin'
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+        isAuthenticated: !!user,
+        isStudent: user?.role === "student",
+        isFaculty: user?.role === "faculty",
+        isHOD: user?.role === "hod",
+        isAdmin: user?.role === "admin",
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
