@@ -3,8 +3,9 @@ const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret123";
 
-const generateToken = (id) =>
-  jwt.sign({ id }, JWT_SECRET, { expiresIn: "30d" });
+const generateToken = (id) => {
+  return jwt.sign({ id }, JWT_SECRET, { expiresIn: "30d" });
+};
 
 const toPublicUser = (user) => ({
   _id: user._id,
@@ -12,111 +13,158 @@ const toPublicUser = (user) => ({
   email: user.email,
   role: user.role,
   registerNumber: user.registerNumber,
+  department: user.department,
+  branch: user.branch,
+  section: user.section,
 });
 
-// ====================
 // STUDENT LOGIN
-// ====================
 const loginStudent = async (req, res) => {
   try {
     const { registerNumber, password } = req.body;
 
+    if (!registerNumber || !password) {
+      return res.status(400).json({ message: "Register number and password required" });
+    }
+
     const user = await User.findOne({
       role: "student",
-      registerNumber,
+      registerNumber: registerNumber.trim(),
     });
 
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    res.json({
+    return res.json({
       token: generateToken(user._id),
       user: toPublicUser(user),
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+  } catch (error) {
+    console.error("Student login error:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
-// ====================
 // FACULTY LOGIN
-// ====================
 const loginFaculty = async (req, res) => {
   try {
     const { facultyId, password } = req.body;
 
+    if (!facultyId || !password) {
+      return res.status(400).json({ message: "Faculty ID and password required" });
+    }
+
+    const id = facultyId.trim();
+
     const user = await User.findOne({
       role: "faculty",
-      $or: [{ email: facultyId }, { registerNumber: facultyId }],
+      $or: [
+        { registerNumber: id },
+        { email: id },
+        { email: `${id}@campus.edu` },
+      ],
     });
 
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    res.json({
+    return res.json({
       token: generateToken(user._id),
       user: toPublicUser(user),
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+  } catch (error) {
+    console.error("Faculty login error:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
-// ====================
 // HOD LOGIN
-// ====================
 const loginHod = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ message: "HOD ID / Email and password required" });
+    }
+
+    const id = email.trim();
+
     const user = await User.findOne({
       role: "hod",
-      email,
+      $or: [
+        { registerNumber: id },
+        { email: id },
+        { email: `${id}@campus.edu` },
+      ],
     });
 
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    res.json({
+    return res.json({
       token: generateToken(user._id),
       user: toPublicUser(user),
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+  } catch (error) {
+    console.error("HOD login error:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
-// ====================
 // REGISTER
-// ====================
 const register = async (req, res) => {
   try {
-    const { name, email, password, registerNumber } = req.body;
+    const {
+      name,
+      email,
+      password,
+      registerNumber,
+      department,
+      branch,
+      section,
+    } = req.body;
+
+    if (!name || !email || !password || !registerNumber) {
+      return res.status(400).json({
+        message: "Name, email, password, and register number are required",
+      });
+    }
+
+    const exists = await User.findOne({
+      $or: [
+        { email: email.toLowerCase().trim() },
+        { registerNumber: registerNumber.trim() },
+      ],
+    });
+
+    if (exists) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
     const bcrypt = require("bcryptjs");
-    const hashed = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       name,
-      email,
-      password: hashed,
-      registerNumber,
+      email: email.toLowerCase().trim(),
+      password: hashedPassword,
       role: "student",
+      registerNumber: registerNumber.trim(),
+      department,
+      branch,
+      section,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       token: generateToken(user._id),
       user: toPublicUser(user),
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+  } catch (error) {
+    console.error("Register error:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
