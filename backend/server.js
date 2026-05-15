@@ -69,3 +69,19 @@ mongoose
     console.error("❌ MongoDB connection error:", err);
     process.exit(1);
   });
+
+  const User = require("./models/User");
+
+app.get("/api/debug/student/:reg", async (req, res) => {
+  const user = await User.findOne({ registerNumber: req.params.reg });
+  if (!user) return res.json({ found: false });
+
+  res.json({
+    found: true,
+    role: user.role,
+    registerNumber: user.registerNumber,
+    email: user.email,
+    passwordStored: user.password,
+    isBcrypt: user.password.startsWith("$2"),
+  });
+});
