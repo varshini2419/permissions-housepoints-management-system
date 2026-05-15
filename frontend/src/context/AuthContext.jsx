@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const API_URL = import.meta.env.VITE_API_URL;
       const res = await axios.post(`${API_URL}/api/auth/login`, credentials);
       if (res.data.success) {
         const { token, ...userData } = res.data.data;
