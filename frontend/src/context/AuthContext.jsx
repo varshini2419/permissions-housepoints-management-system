@@ -19,9 +19,6 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // ====================
-  // LOGIN (FINAL FIX)
-  // ====================
   const login = async (credentials) => {
     try {
       const API_URL = import.meta.env.VITE_API_URL;
@@ -29,7 +26,6 @@ export const AuthProvider = ({ children }) => {
       let endpoint = "";
       let payload = {};
 
-      // Decide endpoint
       if (credentials?.registerNumber) {
         endpoint = "/api/auth/login/student";
         payload = {
@@ -42,6 +38,12 @@ export const AuthProvider = ({ children }) => {
           facultyId: credentials.facultyId.trim(),
           password: credentials.password,
         };
+      } else if (credentials?.hodId) {
+        endpoint = "/api/auth/login/hod";
+        payload = {
+          hodId: credentials.hodId.trim(),
+          password: credentials.password,
+        };
       } else if (credentials?.email) {
         endpoint = "/api/auth/login/hod";
         payload = {
@@ -52,10 +54,8 @@ export const AuthProvider = ({ children }) => {
         return { success: false, error: "Invalid login type" };
       }
 
-      // Call API
       const res = await axios.post(`${API_URL}${endpoint}`, payload);
 
-      // ✅ FIX: backend returns { token, user }
       const token = res.data?.token;
       const userData = res.data?.user;
 
@@ -63,7 +63,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userData));
         setUser(userData);
-
         return { success: true };
       }
 
@@ -76,17 +75,11 @@ export const AuthProvider = ({ children }) => {
 
       return {
         success: false,
-        error:
-          error.response?.data?.message ||
-          error.message ||
-          "Login failed",
+        error: error.response?.data?.message || error.message || "Login failed",
       };
     }
   };
 
-  // ====================
-  // LOGOUT
-  // ====================
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");

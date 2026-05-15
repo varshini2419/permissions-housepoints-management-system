@@ -1,12 +1,11 @@
-// frontend/src/pages/auth/HodLogin.js
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const HodLogin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [hodId, setHodId] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -15,144 +14,87 @@ const HodLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      const result = await login({ email, password });
+      const result = await login({ hodId, password });
+
       if (result.success) {
-        navigate('/hod/dashboard', { replace: true });
+        navigate("/hod/dashboard", { replace: true });
       } else {
-        setError(result.error || 'Login failed. Please check your credentials and try again.');
+        setError(result.error || "Login failed. Please check your credentials.");
       }
     } catch (err) {
-      setError(err?.message || 'Login failed. Please check your credentials and try again.');
+      setError(err?.message || "Login failed.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-600 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-600 py-12 px-4">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl">
+        
         {/* Header */}
         <div>
-          <div className="flex justify-center">
-            <div className="bg-purple-600 text-white p-3 rounded-full">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-          </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="text-center text-3xl font-extrabold text-gray-900">
             HOD Login
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your email and password to access the HOD dashboard
+            Enter your HOD ID and password
           </p>
         </div>
 
-        {/* Error Message */}
+        {/* Error */}
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span className="block sm:inline">{error}</span>
+          <div className="bg-red-100 text-red-700 px-4 py-2 rounded">
+            {error}
           </div>
         )}
 
-        {/* Login Form */}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-              />
-            </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
 
-            {/* Password Field */}
-            <div className="relative">
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? 'Hide' : 'Show'}
-              </button>
-            </div>
-          </div>
+          {/* HOD ID */}
+          <input
+            type="text"
+            placeholder="HOD ID (e.g., hod2026)"
+            value={hodId}
+            onChange={(e) => setHodId(e.target.value)}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            required
+          />
 
-          {/* Remember me and Forgot password */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                Remember me
-              </label>
-            </div>
-
-            <div className="text-sm">
-              <a href="#" className="font-medium text-purple-600 hover:text-purple-500">
-                Forgot your password?
-              </a>
-            </div>
-          </div>
-
-          {/* Login Button */}
-          <div>
+          {/* Password */}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
             <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:bg-purple-300 disabled:cursor-not-allowed"
+              type="button"
+              className="absolute right-2 top-2 text-sm"
+              onClick={() => setShowPassword(!showPassword)}
             >
-              {loading ? (
-                <span className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Logging in...
-                </span>
-              ) : (
-                'Login'
-              )}
+              {showPassword ? "Hide" : "Show"}
             </button>
           </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
 
-        {/* Footer */}
-        <div className="text-center text-sm text-gray-600">
-          <p>© 2024 Campus Permission System. All rights reserved.</p>
-        </div>
       </div>
     </div>
   );
