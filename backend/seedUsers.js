@@ -25,7 +25,6 @@ const seedUsers = async () => {
     console.log("📚 Upserting students...");
     for (let i = 1; i <= 72; i++) {
       const regNum = `24B91A0${700 + i}`;
-      const hashedPassword = await bcrypt.hash(regNum, 10);
 
       await User.findOneAndUpdate(
         { registerNumber: regNum },
@@ -33,7 +32,7 @@ const seedUsers = async () => {
           $set: {
             name: `Student ${i}`,
             email: `student${regNum}@campus.edu`,
-            password: hashedPassword,
+            password: await bcrypt.hash(regNum, 10),
             role: "student",
             registerNumber: regNum,
             department: "Computer Science",
